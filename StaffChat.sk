@@ -1,0 +1,37 @@
+#----------------------------------------------------#
+#                Made                                #
+#            By Milk_And_Cereal                      #
+#                                                    #
+#             Free Resource                          #
+#----------------------------------------------------#
+
+
+Options:
+	permission: staff.skript
+	prefix: &c&lSTAFFCHAT
+
+
+command StaffChat [<text>]:
+	permission: {@permission}
+	permission message: &fUnknown command. Type "/help" for help.
+	aliases: sc
+	trigger:
+		if arg-1 is set:
+			message "{@prefix}&f %colored player's display name% &8»&7 %colored arg-1%" to players where [input has permission "{@permission}"]
+		else:
+			if {stats::%player's uuid%::staffchat} is set:
+				delete {stats::%player's uuid%::staffchat}
+				message "{@prefix} &8»&7 You have &cDisabled&7 StaffChat."
+			else:
+				set {stats::%player's uuid%::staffchat} to true
+				message "{@prefix} &8»&7 You have &aEnabled&7 StaffChat."
+
+
+
+on chat:
+	{stats::%player's uuid%::staffchat} is set
+	if player has permission "{@permission}":
+		cancel event
+		message "{@prefix}&f %colored player's display name% &8»&7 %colored message%" to players where [input has permission "{@permission}"]
+	else:
+		delete {stats::%player's uuid%::staffchat}
